@@ -14,8 +14,7 @@ def new(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
-            question.imgfile = request.FILES['imgfile']
-            print(question.imgfile)
+            question.imgfile = request.FILES
             question.create_date = timezone.now()
             question.author = request.user
             question.save()
