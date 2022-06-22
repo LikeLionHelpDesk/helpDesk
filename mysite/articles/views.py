@@ -14,10 +14,10 @@ def new(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
-            question.imgfile = request.FILES['imgfile']
-            print(question.imgfile)
+            question.imgfile = request.FILES
             question.create_date = timezone.now()
             question.author = request.user
+            print(request.user.profile)
             question.save()
             return redirect('index')
     else:
@@ -27,6 +27,8 @@ def new(request):
 
 def detail(request, question_id):
     question = get_object_or_404(Question,pk=question_id)
+    question.count += 1
+    question.save()
     context = {'question' : question}
     return render(request, 'detail.html', context)
 
@@ -55,7 +57,6 @@ def edit(request, question_id):
         messages.error(request, '수정권한이 없습니다')
         return redirect('detail', question_id=question.id)
     if request.method == "POST":
-        print('a')
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save(commit=False)

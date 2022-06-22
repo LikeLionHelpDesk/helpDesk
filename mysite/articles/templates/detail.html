@@ -38,7 +38,12 @@
     <div>
         <ul>
         {% for answer in question.answer_set.all %}
-            <li>{{ answer.content }} {{ answer.author.username }}</li>
+            <li>{{ answer.content }} 
+                <a href="{% url 'profile' answer.author.pk %}">
+                    {{ answer.author.profile.nickname }}
+                </a>
+                {{answer.select}}
+            </li>
         {% endfor %}
         </ul>
     </div>
@@ -57,7 +62,7 @@
         {% endif %}
         {% csrf_token %}
         <textarea {% if not user.is_authenticated %}disabled{% endif %}
-              name="content" id="content" class="form-control" rows="10"></textarea>
+              name="content" rows="10"></textarea>
         <input {% if not user.is_authenticated %}disabled{% endif %} type="submit" value="답변등록">
     </form>
     <div>

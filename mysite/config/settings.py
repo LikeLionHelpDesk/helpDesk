@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'articles',
-    'users'
+    'users',
+    'account',
+    'annoying',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
