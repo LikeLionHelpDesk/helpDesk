@@ -37,13 +37,43 @@
     </div>
     <div>
         <ul>
+        채택 된 답변
         {% for answer in question.answer_set.all %}
+            {% if answer.select %}
             <li>{{ answer.content }} 
                 <a href="{% url 'profile' answer.author.pk %}">
                     {{ answer.author.profile.nickname }}
                 </a>
-                {{answer.select}}
+                {% if request.user == question.author and request.user != answer.author %}
+                <form action="{% url 'select' question.id answer.id%}" method="post">
+                    {% csrf_token %}
+                    취소 : <input type="checkbox" name="cancel" id="">
+                    <input type="submit" value="확인">
+                </form>
+                {% endif %}
             </li>
+           {% endif %}
+        {% endfor %}
+        </ul>
+        <br>
+        <hr>
+        <br>
+        <ul>
+        {% for answer in question.answer_set.all %}
+            {% if answer.select == False %}
+            <li>{{ answer.content }} 
+                <a href="{% url 'profile' answer.author.pk %}">
+                    {{ answer.author.profile.nickname }}
+                </a>
+                {% if request.user == question.author and request.user != answer.author %}
+                <form action="{% url 'select' question.id answer.id%}" method="post">
+                    {% csrf_token %}
+                    채택 : <input type="checkbox" name="select" id="">
+                    <input type="submit" value="확인">
+                </form>
+                {% endif %}
+            </li>
+            {% endif %}
         {% endfor %}
         </ul>
     </div>

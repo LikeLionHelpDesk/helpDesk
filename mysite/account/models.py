@@ -9,6 +9,7 @@ class Profile(models.Model):
     nickname = models.CharField(max_length = 255, null=True, unique=True)
     school = models.TextField(blank=True, null=True)
     git_address = models.TextField(blank=True,null=True)
+    adopted_answer = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username

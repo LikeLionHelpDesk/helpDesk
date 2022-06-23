@@ -20,6 +20,19 @@
     <div>
         내 소개 : {{profile.bio}} 
     </div>
+    <div>
+        나의 등급 : 
+        {% if 3 >= profile.adopted_answer %}
+            초보
+        {% elif 10 >= profile.adopted_answer %}
+            중수
+        {% else %}
+            고수
+        {% endif %}
+    </div>
+    <div>
+        채택 받은 나의 답변수 : {{profile.adopted_answer}}
+    </div>
     <br>
     {% if user == profile.user %}
     <div>
@@ -35,6 +48,11 @@
             <a href="../profile/update_profile">
                 <button>
                     수정하기
+                </button>
+            </a>
+            <a href="{% url 'index' %}">
+                <button>
+                    home
                 </button>
             </a>
         </div>    
