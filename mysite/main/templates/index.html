@@ -14,9 +14,6 @@
     <a href="users/logout">
         <button>{{ user.username }} (로그아웃)</button>
     </a>
-    <a href="profile/{{user.pk}}">
-        <button>마이페이지</button>
-    </a>
     {% else %}
     <a href="users/login">
         <button>로그인</button>
@@ -37,12 +34,15 @@
                     {% endif %}    
                 </td>
                 <td>
-                    <a href="profile/{{question.author.pk}}">
-                        {{question.author}}
-                    </a>
+                    {{question.author}}
                 </td>
                 <td>
                     {{question.create_date}}
+                </td>
+                <td>
+                    {% if question.imgfile %}
+                    <img src = "{{question.imgfile.url}}" width = "50px" />
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

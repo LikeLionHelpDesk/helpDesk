@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/articles/edit/{{ question.id }}" method="post">
+    <form action="/articles/edit/{{ question.id }}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit"> 수정하기 </button>

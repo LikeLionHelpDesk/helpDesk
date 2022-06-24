@@ -14,13 +14,14 @@ def new(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
-            question.imgfile = request.FILES
+            question.imgfile = request.FILES.get('imgfile')
             question.create_date = timezone.now()
             question.author = request.user
             question.save()
-            return redirect('index')
+        return redirect('index')
     else:
         form = QuestionForm()
+        
     context = {'form' : form}
     return render(request, 'new.html', context)
 
@@ -34,11 +35,12 @@ def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             answer = form.save(commit=False)
             answer.create_date = timezone.now()
             answer.question = question
             answer.author = request.user
+            answer.image = request.FILES.get('image')
             answer.save()
             return redirect('detail', question_id = question.id)
     else:
@@ -68,10 +70,12 @@ def edit(request, question_id):
 
 def delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    # answer = get_object_or_404(Answer, pk=question_id)
     if request.user != question.author:
         messages.error(request, '삭제권한이 없습니다')
         return redirect('pybo:detail', question_id=question.id)
     question.delete()
+    # answer.delete()
     return redirect('index')
 
 def test(request):

@@ -19,9 +19,12 @@
     <div>
         작성 시간 : {{ question.create_date }}
     </div>
-    <!-- <div>
-        {{question.imgfile}}
-    </div> -->
+    <div>
+        {% if question.imgfile %}
+        <img src = "{{question.imgfile.url}}" width = "200" />
+        {% endif %}
+
+    </div>
     <h5>{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
     <div>
         {% if request.user == question.author %}
@@ -39,10 +42,15 @@
         <ul>
         {% for answer in question.answer_set.all %}
             <li>{{ answer.content }} {{ answer.author.username }}</li>
+            <div>
+                {% if answer.image %}
+                <img src = "{{answer.image.url}}" width = "200" />
+                {% endif %}     
+            </div>
         {% endfor %}
         </ul>
     </div>
-    <form action="{% url 'answer_create' question.id %}" method="post"> 
+    <form action="{% url 'answer_create' question.id %}" method="post" enctype="multipart/form-data"> 
         {% if form.errors %}
         <div>
             {% for field in form %}
@@ -54,10 +62,13 @@
             {% endif %}
             {% endfor %}
         </div>
+        
         {% endif %}
         {% csrf_token %}
         <textarea {% if not user.is_authenticated %}disabled{% endif %}
               name="content" id="content" class="form-control" rows="10"></textarea>
+        <input type="file" name="image" />
+        <br />
         <input {% if not user.is_authenticated %}disabled{% endif %} type="submit" value="답변등록">
     </form>
     <div>
