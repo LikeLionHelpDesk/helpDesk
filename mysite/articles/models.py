@@ -14,7 +14,7 @@ class Question(models.Model):
     count = models.PositiveIntegerField(default=0)
     solved = models.BooleanField(default=False)
     selected_question = models.PositiveIntegerField(default=0)
-    # tag = models.CharField(max_length = 255) 
+    tags = models.CharField(max_length = 255, null=True, blank=True) 
 
     def __str__(self):
         return self.subject

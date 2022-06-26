@@ -3,13 +3,14 @@ from re import A
 from django.shortcuts import render
 from articles.models import Question
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def index(request):
     test = Question.objects.filter(subject__icontains = '\"')[:6]
     if request.method == 'POST' and 'category' in request.POST:
         category_name = request.POST['category']
         if category_name:
-            test = Question.objects.filter(subject__icontains = category_name)[:6]
+            test = Question.objects.filter(Q(subject__icontains = category_name) | Q(tags__icontains = category_name))[:6]
     page = request.GET.get('page', '1')
     question_list = Question.objects.order_by('-create_date') # 작성일시 역순으로 정렬
     new_question = Question.objects.order_by('-count')[:6]

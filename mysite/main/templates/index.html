@@ -32,7 +32,7 @@
         {% for testcase in test %}
             <ul>
                 <a href="/articles/detail/{{ testcase.id }}">
-                    <li>{{testcase.subject}}</li>
+                    {{testcase.subject}}
                 </a>
             </ul>
         {% endfor %}
