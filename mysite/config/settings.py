@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'articles',
     'users',
     'account',
-    'annoying',
 ]
 
 MIDDLEWARE = [
