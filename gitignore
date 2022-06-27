@@ -267,7 +267,3 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/django,venv,python
-<<<<<<< HEAD
-
-=======
->>>>>>> 14ae95d (first commit)
