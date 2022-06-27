@@ -7,7 +7,7 @@
     <title>질문 등록하기</title>
 </head>
 <body>
-    <form method="post">         <!-- 여기를 new 랑 edit 이 둘다 씀 -->
+    <form action="{% url 'new' %}" method="POST" enctype="multipart/form-data">         <!-- 여기를 new 랑 edit 이 둘다 씀 -->
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit"> 저장하기 </button>

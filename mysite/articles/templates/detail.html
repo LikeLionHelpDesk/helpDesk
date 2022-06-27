@@ -20,6 +20,11 @@
         작성 시간 : {{ question.create_date }}
     </div>
     <div>
+        {% if question.imgfile %}
+        <img src = "{{question.imgfile.url}}" width = "200" />
+        {% endif %}
+    </div>
+    <div>
         태그 : {{question.tags}}
     </div>
     <!-- <div>
