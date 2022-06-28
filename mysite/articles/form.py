@@ -6,11 +6,12 @@ from .models import Question, Answer
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['subject', 'content', 'imgfile']
+        fields = ['subject', 'content', 'imgfile', 'tags']
         labels = {
             'subject' : '제목',
             'content' : '내용',
             'imgfile' : '파일',
+            'tags' : '태그',
         }
 
 class AnswerForm(forms.ModelForm):

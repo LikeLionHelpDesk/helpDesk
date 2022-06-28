@@ -12,6 +12,10 @@ class Question(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     imgfile = models.ImageField(upload_to="articles/question/", blank=True, null=True)
+    count = models.PositiveIntegerField(default=0)
+    solved = models.BooleanField(default=False)
+    selected_question = models.PositiveIntegerField(default=0)
+    tags = models.CharField(max_length = 255, null=True, blank=True) 
 
     def __str__(self):
         return self.subject
@@ -28,7 +32,8 @@ class Answer(models.Model):
     content = models.TextField(blank=True)
     create_date = models.DateTimeField()
     image = models.ImageField(upload_to ="articles/answer/", blank=True, null=True)
-
+    select = models.BooleanField(default=False)
+    
     def delete(self, *args, **kargs):
         if self.image:
             os.remove(os.path.join(settings.MEDIA_ROOT, self.image.path))

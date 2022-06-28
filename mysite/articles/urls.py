@@ -27,4 +27,5 @@ urlpatterns = [
     path('delete/<int:question_id>', views.delete, name='delete'),
     path('answer/delete/<int:answer_id>', views.answer_delete, name='answer_delete'),
     path('answer/modify/<int:answer_id>',views.answer_modify, name='answer_modify'),
+    path('select/<int:question_id>/<int:answer_id>', views.select, name='select'),
 ]

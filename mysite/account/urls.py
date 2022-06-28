@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path('<int:user_id>', views.profile, name='profile'),
+    path('update_profile/', views.update_profile, name='update_profile'),
 ]

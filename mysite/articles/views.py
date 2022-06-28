@@ -1,5 +1,4 @@
-from multiprocessing import context
-from unicodedata import name
+from account.models import Profile
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Question, Answer
 from django.http import HttpResponseNotAllowed
@@ -109,3 +108,28 @@ def answer_modify(request, answer_id):
             form = AnswerForm(instance=answer)
         context = {'answer' : answer, 'form' : form}
         return render(request, 'detail.html', context)
+
+def select(request, question_id, answer_id):
+    question = get_object_or_404(Question, pk=question_id)
+    answer = get_object_or_404(Answer, pk = answer_id)
+    profile = get_object_or_404(Profile, nickname = answer.author.profile.nickname)
+    if('select' in request.POST):
+        answer.select = True
+        if(question.solved == False):
+            question.solved = True
+        profile.adopted_answer += 1
+        question.selected_question += 1
+        answer.save()
+        question.save()
+        profile.save()
+    elif('cancel' in request.POST):
+        answer.select = False
+        if(profile.adopted_answer != 0):
+            profile.adopted_answer -= 1
+        question.selected_question -= 1        
+        if(question.selected_question == 0 and question.solved == True):
+            question.solved = False
+        profile.save()
+        answer.save()
+        question.save()
+    return redirect('detail', question_id=question.id)
