@@ -80,3 +80,32 @@ def delete(request, question_id):
 
 def test(request):
     return render(request, 'test.html')
+
+@login_required(login_url='../../../users/login')
+def answer_delete(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '삭제권한이 없습니다!')
+    else:
+        answer.delete()
+    return redirect('detail', question_id=answer.question.id)
+
+@login_required(login_url='../../../users/login')
+def answer_modify(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '수정권한이 없습니다.')
+        return redirect('detail', question_id=answer.question.id)
+    
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user
+            answer.modify_date = timezone.now()
+            answer.save()
+            return redirect('detail', question_id=answer.question.id)
+        else:
+            form = AnswerForm(instance=answer)
+        context = {'answer' : answer, 'form' : form}
+        return render(request, 'detail.html', context)
