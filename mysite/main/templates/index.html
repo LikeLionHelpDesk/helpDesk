@@ -14,12 +14,96 @@
     <a href="users/logout">
         <button>{{ user.username }} (로그아웃)</button>
     </a>
+    <a href="profile/{{user.pk}}">
+        <button>마이페이지</button>
+    </a>
     {% else %}
     <a href="users/login">
         <button>로그인</button>
     </a>
     {% endif %}
-    <table>
+    <br>
+    <form action="{% url 'index' %}" method="POST">
+        {% csrf_token %}
+        조회 : <input type="text" name = "category" value="{{test.subject}}">
+        <input type="submit" value="조회">
+    </form>
+    {% if test %}
+        {% for testcase in test %}
+            <ul>
+                <a href="/articles/detail/{{ testcase.id }}">
+                    {{testcase.subject}}
+                </a>
+            </ul>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <table>많이 본 Q&A
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일시</th>
+                <th>댓글수</th>
+                <th>조회수</th>
+                <th>해결</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if new_question %}
+            {% for question in new_question %}
+            <tr>
+                <td>
+                    {{forloop.counter}}
+                </td>
+                <td>
+                    <a href="/articles/detail/{{ question.id }}">
+                        {{ question.subject }}
+                    </a>
+                </td>
+                <td>
+                    <a href="profile/{{question.author.pk}}">
+                        {{question.author.profile.nickname}}
+                    </a>
+                </td>
+                <td>
+                    {{question.create_date}}
+                </td>
+                <td>
+                    {% if question.answer_set.count >= 0 %}
+                    <span>{{ question.answer_set.count }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{question.count}}
+                </td>
+                <td>
+                    {% if question.solved == True %}
+                        해결
+                    {% elif question.solved == False %}
+                        미해결
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <p>질문이 없습니다.</p>
+            {% endif %}
+        </tbody>    
+    </table>
+    <table>최근 질문
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일시</th>
+                <th>댓글수</th>
+                <th>조회수</th>
+                <th>해결</th>
+            </tr>
+        </thead>
         <tbody>
             {% if question_list %}
             {% for question in question_list %}
@@ -27,17 +111,39 @@
                 <td>
                     {{forloop.counter}}
                 </td>
+
                 <td>
                     <a href="/articles/detail/{{ question.id }}">{{ question.subject }}</a>
-                    {% if question.answer_set.count > 0 %}
-                    <span class="text-danger small mx-2">{{ question.answer_set.count }}</span>
-                    {% endif %}    
                 </td>
                 <td>
-                    {{question.author}}
+                    <a href="profile/{{question.author.pk}}">
+                        {{question.author.profile.nickname}}
+                    </a>
                 </td>
+
                 <td>
                     {{question.create_date}}
+                </td>        
+                <td>
+                    {% if question.answer_set.count >= 0 %}
+                    <span>{{ question.answer_set.count }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{question.count}}
+                </td>
+                <td>
+                    {% if question.solved == True %}
+                        해결
+                    {% elif question.solved == False %}
+                        미해결
+                    {% endif %}
+                </td>
+                <td>|</td>
+                <td>
+                    {% if question.imgfile %}
+                    <img src = "{{question.imgfile.url}}" width = "50px" />
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

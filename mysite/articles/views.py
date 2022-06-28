@@ -1,5 +1,4 @@
-from multiprocessing import context
-from unicodedata import name
+from account.models import Profile
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Question, Answer
 from django.http import HttpResponseNotAllowed
@@ -14,14 +13,14 @@ def new(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
-            question.imgfile = request.FILES['imgfile']
-            print(question.imgfile)
+            question.imgfile = request.FILES.get('imgfile')
             question.create_date = timezone.now()
             question.author = request.user
             question.save()
-            return redirect('index')
+        return redirect('index')
     else:
         form = QuestionForm()
+        
     context = {'form' : form}
     return render(request, 'new.html', context)
 
@@ -35,11 +34,12 @@ def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             answer = form.save(commit=False)
             answer.create_date = timezone.now()
             answer.question = question
             answer.author = request.user
+            answer.image = request.FILES.get('image')
             answer.save()
             return redirect('detail', question_id = question.id)
     else:
@@ -69,11 +69,67 @@ def edit(request, question_id):
 
 def delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    # answer = get_object_or_404(Answer, pk=question_id)
     if request.user != question.author:
         messages.error(request, '삭제권한이 없습니다')
         return redirect('pybo:detail', question_id=question.id)
     question.delete()
+    # answer.delete()
     return redirect('index')
 
 def test(request):
     return render(request, 'test.html')
+
+@login_required(login_url='../../../users/login')
+def answer_delete(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '삭제권한이 없습니다!')
+    else:
+        answer.delete()
+    return redirect('detail', question_id=answer.question.id)
+
+@login_required(login_url='../../../users/login')
+def answer_modify(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '수정권한이 없습니다.')
+        return redirect('detail', question_id=answer.question.id)
+    
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user
+            answer.modify_date = timezone.now()
+            answer.save()
+            return redirect('detail', question_id=answer.question.id)
+        else:
+            form = AnswerForm(instance=answer)
+        context = {'answer' : answer, 'form' : form}
+        return render(request, 'detail.html', context)
+
+def select(request, question_id, answer_id):
+    question = get_object_or_404(Question, pk=question_id)
+    answer = get_object_or_404(Answer, pk = answer_id)
+    profile = get_object_or_404(Profile, nickname = answer.author.profile.nickname)
+    if('select' in request.POST):
+        answer.select = True
+        if(question.solved == False):
+            question.solved = True
+        profile.adopted_answer += 1
+        question.selected_question += 1
+        answer.save()
+        question.save()
+        profile.save()
+    elif('cancel' in request.POST):
+        answer.select = False
+        if(profile.adopted_answer != 0):
+            profile.adopted_answer -= 1
+        question.selected_question -= 1        
+        if(question.selected_question == 0 and question.solved == True):
+            question.solved = False
+        profile.save()
+        answer.save()
+        question.save()
+    return redirect('detail', question_id=question.id)
