@@ -4,9 +4,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <!--페이지 제목 폰트 (나눔고딕 700)-->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
+    <!--페이지 기본 폰트 (나눔고딕 400)-->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <title>HelpDesk::로그인</title>
 </head>
 <body>
+    <form method="post" action="{% url 'login' %}">
+        <input type="hidden" name="next" value="{{ next }}">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
+        <div class="container">
+            <div class="topMenu" id="loginTopMenu">
+                <div class="topMenuWrap">
+                    <div class="logoIcon">
+                        <img src="./style/logo.png" alt="헬프데스크 이미지 로고">
+                    </div>
+                    <div class="logoTxt">
+                        <img src="./style/logoTxt.png" alt="헬프데스크 텍스트 로고">
+                    </div>
+                </div>
+            </div>
+            <div class="contentsWrap">
+                <div class="loginInputWrap">
+                    <div class="loginInput" id="loginId"> <!--= class 'mb-3'-->
+                        <img src="./style/loginId.png" alt="로그인아이디 아이콘">
+                        <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}" size="26" placeholder="아이디" required style="border:0 solid black;">
+                    </div>
+                    <div class="loginInput" id="loginPw">  <!--= class 'mb-3'-->
+                        <img src="./style/loginPassword.png" alt="로그인패스워드 아이콘">
+                        <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}" size="26" placeholder="비밀번호" required style="border:0 solid black;">
+                    </div>
+                </div>
+                <div class="loginButtons">
+                    <div class="loginButton"><button type="submit" class="btn btn-primary" style="width:80px;">로그인</button></div>
+                        <!--<input type="button" onclick="" value="로그인" style="width:80px;">-->
+                        <!--회원가입 페이지 url-->
+                    <div class="loginButton"><input type="button" onclick="" value="회원가입" style="width:80px;"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+<!--
+<body>
+    <div class="container">
+        <form method="post" action="{% url 'login' %}">
+            <input type="hidden" name="next" value="{{ next }}">
+            {% csrf_token %}
+            {% include "form_errors.html" %}
+            
+        </form>
+    </div>
+</body>
+
+
+
+    <body>
     <form method="post" action="{% url 'login' %}">
         <input type="hidden" name="next" value="{{ next }}">
         {% csrf_token %}
@@ -24,4 +85,4 @@
         <button type="submit" class="btn btn-primary">로그인</button>
     </form>
 </body>
-</html>
+-->
