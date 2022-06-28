@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 from account.models import Profile
+=======
+from multiprocessing import context
+from unicodedata import name
+>>>>>>> 14ae95d... first commit
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Question, Answer
 from django.http import HttpResponseNotAllowed
@@ -13,6 +18,7 @@ def new(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
+<<<<<<< HEAD
             question.imgfile = request.FILES.get('imgfile')
             question.create_date = timezone.now()
             question.author = request.user
@@ -21,6 +27,16 @@ def new(request):
     else:
         form = QuestionForm()
         
+=======
+            question.imgfile = request.FILES['imgfile']
+            print(question.imgfile)
+            question.create_date = timezone.now()
+            question.author = request.user
+            question.save()
+            return redirect('index')
+    else:
+        form = QuestionForm()
+>>>>>>> 14ae95d... first commit
     context = {'form' : form}
     return render(request, 'new.html', context)
 
@@ -34,12 +50,19 @@ def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
+<<<<<<< HEAD
         if form.is_valid():
+=======
+        if form.is_valid:
+>>>>>>> 14ae95d... first commit
             answer = form.save(commit=False)
             answer.create_date = timezone.now()
             answer.question = question
             answer.author = request.user
+<<<<<<< HEAD
             answer.image = request.FILES.get('image')
+=======
+>>>>>>> 14ae95d... first commit
             answer.save()
             return redirect('detail', question_id = question.id)
     else:
@@ -69,11 +92,15 @@ def edit(request, question_id):
 
 def delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+<<<<<<< HEAD
     # answer = get_object_or_404(Answer, pk=question_id)
+=======
+>>>>>>> 14ae95d... first commit
     if request.user != question.author:
         messages.error(request, '삭제권한이 없습니다')
         return redirect('pybo:detail', question_id=question.id)
     question.delete()
+<<<<<<< HEAD
     # answer.delete()
     return redirect('index')
 
@@ -133,3 +160,9 @@ def select(request, question_id, answer_id):
         answer.save()
         question.save()
     return redirect('detail', question_id=question.id)
+=======
+    return redirect('index')
+
+def test(request):
+    return render(request, 'test.html')
+>>>>>>> 14ae95d... first commit

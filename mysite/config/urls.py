@@ -23,5 +23,8 @@ urlpatterns = [
     path('', include('main.urls')),
     path('articles/', include('articles.urls')),
     path('users/', include('users.urls')),
+<<<<<<< HEAD
     path('profile/',include('account.urls')),
+=======
+>>>>>>> 14ae95d... first commit
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

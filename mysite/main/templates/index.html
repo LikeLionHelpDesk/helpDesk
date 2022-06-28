@@ -14,14 +14,18 @@
     <a href="users/logout">
         <button>{{ user.username }} (로그아웃)</button>
     </a>
+<<<<<<< HEAD
     <a href="profile/{{user.pk}}">
         <button>마이페이지</button>
     </a>
+=======
+>>>>>>> 14ae95d... first commit
     {% else %}
     <a href="users/login">
         <button>로그인</button>
     </a>
     {% endif %}
+<<<<<<< HEAD
     <br>
     <form action="{% url 'index' %}" method="POST">
         {% csrf_token %}
@@ -104,6 +108,9 @@
                 <th>해결</th>
             </tr>
         </thead>
+=======
+    <table>
+>>>>>>> 14ae95d... first commit
         <tbody>
             {% if question_list %}
             {% for question in question_list %}
@@ -111,6 +118,7 @@
                 <td>
                     {{forloop.counter}}
                 </td>
+<<<<<<< HEAD
 
                 <td>
                     <a href="/articles/detail/{{ question.id }}">{{ question.subject }}</a>
@@ -144,6 +152,19 @@
                     {% if question.imgfile %}
                     <img src = "{{question.imgfile.url}}" width = "50px" />
                     {% endif %}
+=======
+                <td>
+                    <a href="/articles/detail/{{ question.id }}">{{ question.subject }}</a>
+                    {% if question.answer_set.count > 0 %}
+                    <span class="text-danger small mx-2">{{ question.answer_set.count }}</span>
+                    {% endif %}    
+                </td>
+                <td>
+                    {{question.author}}
+                </td>
+                <td>
+                    {{question.create_date}}
+>>>>>>> 14ae95d... first commit
                 </td>
             </tr>
             {% endfor %}
