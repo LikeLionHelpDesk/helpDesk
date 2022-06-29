@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <title>질문 등록하기</title>
 </head>
 <body>
-    <form action="{% url 'new' %}" method="POST" enctype="multipart/form-data">         <!-- 여기를 new 랑 edit 이 둘다 씀 -->
+    <form action="{% url 'new' %}" method="POST" enctype="multipart/form-data">         
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit"> 저장하기 </button>
@@ -17,5 +17,34 @@
             home
         </button>
     </a>    
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>질문 등록하기</title>
+</head>
+<body>
+    <div class="container">
+        <div class="topLine">
+            <a href="index.html">
+                <img src="/static/logo.png" style="width: 100px; height: 100px; text-align: center;">
+            <img src="/static/logoTxt.png" style="width: 100px; height: 100px;">
+            </a>
+        </div>
+        <div class="upLoadTxt">
+            <form action="{% url 'new' %}" method="POST" enctype="multipart/form-data">         <!-- 여기를 new 랑 edit 이 둘다 씀 -->
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit"> 저장하기 </button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

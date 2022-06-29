@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -149,7 +149,6 @@
         <button>질문 등록하기</button>
     </a>
     <ul>
-        <!-- 이전페이지 -->
         {% if question_list.has_previous %}
         <li >
             <a href="?page={{ question_list.previous_page_number }}">이전</a>
@@ -159,7 +158,6 @@
             <a tabindex="-1" href="#">이전</a>
         </li>
         {% endif %}
-        <!-- 페이지리스트 -->
         {% for page_number in question_list.paginator.page_range %}
         {% if page_number == question_list.number %}
         <li>
@@ -171,7 +169,6 @@
         </li>
         {% endif %}
         {% endfor %}
-        <!-- 다음페이지 -->
         {% if question_list.has_next %}
         <li>
             <a href="?page={{ question_list.next_page_number }}">다음</a>
@@ -182,5 +179,187 @@
         </li>
         {% endif %}
     </ul>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>헬프데스크 홈페이지</title>
+</head>
+<body>
+    <div class="container">
+        <div class="topLine">
+            <a href="index.html">
+                <img src="./static/logo.png" style="width: 100px; height: 100px; text-align: center;">
+            <img src="./static/logoTxt.png" style="width: 100px; height: 100px;">
+            </a>
+        </div>
+        <div class="functionBar">
+            <a href="/articles/new" style="margin: 20px;">
+                <button>질문 등록하기</button>
+            </a>
+            <!--로그인 또는 마이페이지 이동-->
+            <a href="마이페이지.html">
+                <img src="./static/loginId.png" style="width: 50px; height: 50px; float: right; margin: 10px;">
+            </a>
+        </div>
+        <div class="hotTopic">
+            <table style="margin: 10px;"> <p style="margin: 10px;">많이 본 Q&A</p>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일시</th>
+                        <th>댓글수</th>
+                        <th>조회수</th>
+                        <th>해결</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if new_question %}
+                    {% for question in new_question %}
+                    <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                            <a href="/articles/detail/{{ question.id }}">
+                                {{ question.subject }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="profile/{{question.author.pk}}">
+                                {{question.author.profile.nickname}}
+                            </a>
+                        </td>
+                        <td>
+                            {{question.create_date}}
+                        </td>
+                        <td>
+                            {% if question.answer_set.count >= 0 %}
+                            <span>{{ question.answer_set.count }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{question.count}}
+                        </td>
+                        <td>
+                            {% if question.solved == True %}
+                                해결
+                            {% elif question.solved == False %}
+                                미해결
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <p>질문이 없습니다.</p>
+                    {% endif %}
+                </tbody>    
+            </table>
+        </div>
+        <div class="recentTopic">
+            <table>최근 질문
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일시</th>
+                        <th>댓글수</th>
+                        <th>조회수</th>
+                        <th>해결</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if question_list %}
+                    {% for question in question_list %}
+                    <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+        
+                        <td>
+                            <a href="/articles/detail/{{ question.id }}">{{ question.subject }}</a>
+                        </td>
+                        <td>
+                            <a href="profile/{{question.author.pk}}">
+                                {{question.author.profile.nickname}}
+                            </a>
+                        </td>
+        
+                        <td>
+                            {{question.create_date}}
+                        </td>        
+                        <td>
+                            {% if question.answer_set.count >= 0 %}
+                            <span>{{ question.answer_set.count }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{question.count}}
+                        </td>
+                        <td>
+                            {% if question.solved == True %}
+                                해결
+                            {% elif question.solved == False %}
+                                미해결
+                            {% endif %}
+                        </td>
+                        <td>|</td>
+                        <td>
+                            {% if question.imgfile %}
+                            <img src = "{{question.imgfile.url}}" width = "50px" />
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <p>질문이 없습니다.</p>
+                    {% endif %}
+                </tbody>    
+            </table>
+        </div>
+        <ul class="pageNation">
+            <!-- 이전페이지 -->
+            {% if question_list.has_previous %}
+            <li >
+                <a href="?page={{ question_list.previous_page_number }}">이전</a>
+            </li>
+            {% else %}
+            <li >
+                <a tabindex="-1" href="#">이전</a>
+            </li>
+            {% endif %}
+            <!-- 페이지리스트 -->
+            {% for page_number in question_list.paginator.page_range %}
+            {% if page_number == question_list.number %}
+            <li>
+                <a href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            <!-- 다음페이지 -->
+            {% if question_list.has_next %}
+            <li>
+                <a href="?page={{ question_list.next_page_number }}">다음</a>
+            </li>
+            {% else %}
+            <li >
+                <a tabindex="-1" href="#">다음</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
 </body>
 </html>

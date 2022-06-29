@@ -1,0 +1,58 @@
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #634086;
+}
+
+.container {
+    width: 70%;
+    height: 100vh;
+    background-color: rgb(247, 245, 243);
+    margin-left: 15%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.topLine {
+    height: 10vh;
+    margin-top: 2px;
+    display: flex;
+    justify-content : center;
+}
+
+.functionBar {
+    margin-top: 2%;
+}
+
+.hotTopic {
+    background-color: rgba(128, 128, 128, 0.205);
+}
+
+.recentTopic {
+    margin-top: 20px;
+    background-color: rgba(128, 128, 128, 0.205);
+}
+
+.pageNation {
+    display: flex;
+    position: relative;
+}
+
+.upLoadTxt {
+    margin-top: 10%;
+    display: flex;
+    justify-content : center;
+}
+
+.mentiCnt {
+    margin: 20px;
+    background-color: rgba(128, 128, 128, 0.205);
+}
+
+.mentoCnt {
+    margin: 20px;
+    background-color: rgba(128, 128, 128, 0.205);
+    text-align: right;
+}
