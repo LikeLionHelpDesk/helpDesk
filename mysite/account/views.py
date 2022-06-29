@@ -13,6 +13,10 @@ from django.db import transaction
 from django.contrib import messages
 from .forms import ProfileForm
 
+#Questions Paginator
+from django.core.paginator import Paginator
+
+
 # Create your views here.
 def profile(request, user_id):
     question_list = Question.objects.order_by('-create_date') # 작성일시 역순으로 정렬
@@ -39,3 +43,10 @@ def update_profile(request):
     return render(request, 'update_profile.html', {
         'profile_form': profile_form
     })
+
+#Questions 페이징 처리
+questions_list = Account.objects.all()
+page = request.GET.get('page', '1')
+paginator = Paginator(questions_list, '1')
+page_obj = paginator.page(page)
+

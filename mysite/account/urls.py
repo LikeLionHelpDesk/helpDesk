@@ -20,4 +20,6 @@ from . import views
 urlpatterns = [
     path('<int:user_id>', views.profile, name='profile'),
     path('update_profile/', views.update_profile, name='update_profile'),
+    path('profileQuestions/', views.profile, name='profileQuestions'),
+    path('profileAnswers/', views.profile, name='profileAnswers'),
 ]

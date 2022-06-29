@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <title>HelpDesk::프로필</title>
+</head>
+<body>
+    This is the profile page for {{profile.user}}   
+    <div class="container">
+        <div class="topMenu" id="joinTopMenu">
+            <div class="topMenuWrap">
+                <div class="logoIcon">
+                    <img src="./style/logo.png" alt="헬프데스크 이미지 로고">
+                </div>
+                <div class="logoTxt">
+                    <img src="./style/logoTxt.png" alt="헬프데스크 텍스트 로고">
+                </div>
+            </div>
+        </div>
+        <div class="contents">
+            <div class="contentsTab">
+                <div class="contentsTabBar">
+                    <div class="profileMenu"><a href="{% url 'profile' %}">Introduce</a></div>
+                    <div class="profileMenu"><a href="{% url 'profileQuestions' %}">Questions</a></div>
+                    <div class="profileMenu" id="onLoad"><a href="{% url 'profileAnswers' %}">Answers</a></div>
+                </div>
+            </div>
+            <div class="contentsLeft">
+                <div class="profilePicture">
+                    <div class="profileImg">
+                        <br />
+                        {% if profile.image %}
+                        <img src = "{{ profile.image.url }}" width="200" height="200" />
+                        {% else %}
+                        <img src="{% static 'user.png' %}" width="200" height="200" />
+                        {% endif %}
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div class="contentsRight">
+                .
+                <div>
+                    <!--내 답변<br>-->  <!--답변 내용은 어디있는지 못찾겠는데...-->
+                    {% for question in question_list %}
+                        {% if question.author == profile.user %}
+                            <div>
+                                <a href=""> {{question.subject}} </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                <div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

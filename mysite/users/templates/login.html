@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +42,10 @@
                 <div class="loginButtons">
                     <div class="loginButton"><button type="submit" class="btn btn-primary" style="width:80px;">로그인</button></div>
                         <!--<input type="button" onclick="" value="로그인" style="width:80px;">-->
-                        <!--회원가입 페이지 url-->
-                    <div class="loginButton"><input type="button" onclick="" value="회원가입" style="width:80px;"></div>
+                    <div class="loginButton">
+                        <a href="{% url 'signup' %}"><button style="width:80px;">회원가입</button></a>
+                        <!--<input type="button" onclick="" value="회원가입" style="width:80px;">-->
+                    </div>
                 </div>
             </div>
         </div>

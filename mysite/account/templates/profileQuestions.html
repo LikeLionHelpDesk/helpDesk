@@ -103,8 +103,8 @@
         <div class="contents">
             <div class="contentsTab">
                 <div class="contentsTabBar">
-                    <div class="profileMenu" id="onLoad"><a href="{% url 'profile' %}">Introduce</a></div>
-                    <div class="profileMenu"><a href="{% url 'profileQuestions' %}">Questions</a></div>
+                    <div class="profileMenu"><a href="{% url 'profile' %}">Introduce</a></div>
+                    <div class="profileMenu" id="onLoad"><a href="{% url 'profileQuestions' %}">Questions</a></div>
                     <div class="profileMenu"><a href="{% url 'profileAnswers' %}">Answers</a></div>
                 </div>
             </div>
@@ -113,66 +113,26 @@
                     <div class="profileImg">
                         <br />
                         {% if profile.image %}
-                        <img src = "{{ profile.image.url }}"/>
+                        <img src = "{{ profile.image.url }}" width="200" height="200" />
                         {% else %}
-                        <img src="{% static 'user.png' %}"/>
+                        <img src="{% static 'user.png' %}" width="200" height="200" />
                         {% endif %}
                         <br />
-                    </div>
-                    <!--아래 '수정하기'버튼 클릭해서 update_profile.html 에서 한 번에 수정하는 걸로...?-->
-                    <!--<div class="profileReset"><input type="button" value="업로드"></div>-->
-                </div>
-                <div class="shortInfo">
-                    <div class="shortInfoLeft">
-                        <p>닉네임</p>
-                        <p>티어</p>
-                        <p>기관</p>
-                        <p>Git</p>
-                    </div>
-                    <div class="shortInfoRight">
-                        <div class="shortInfoRight">
-                            {{profile.nickname}}
-                            {% if 3 >= profile.adopted_answer %}
-                                초보
-                            {% elif 10 >= profile.adopted_answer %}
-                                중수
-                            {% else %}
-                                고수
-                            {% endif %}
-                            {{profile.school}}
-                            {{profile.git_address}}
-
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="contentsRight">
-                <div class="interactionBar">채택 받은 나의 답변수 : {{profile.adopted_answer}}</div>
-                <div class="introduceBar">
-                    <div class="introduceBarHead"><h2>Introduce</h2></div>
-                    <div class="introduceBarContents">
-                        <!--
-                        <div class="introduceBarContentsTop">
-                            <div class="introduceCategory">
-                                <p>Github</p>
-                                <!--<p>Blog</p>--> <!--
+                .
+                <div>
+                    <!--내 질문<br>-->
+                    {% for question in question_list %}
+                        {% if question.author == profile.user %}
+                            <div>
+                                <a href=""> {{question.subject}} </a>
                             </div>
-                            <div class="introduceCategoryLink">
-                                {{profile.git_address}}
-                                <!--<p>Blog 주소</p>--> <!--
-                            </div>
-                        </div>
-                        -->
-                        <div class="introduceBarContentsBottom">
-                            <textarea name="자기소개" id="introduce" cols="30" rows="10" placeholder="간단한 자기소개를 적어주세요."></textarea>
-                        </div>
-                        <div class="introduceButtons">
-                            <!--update_profile.html 로 연결해야함.-->
-                            <a href="{% url 'update_profile' %}"><button>수정하기</button></a>
-                            <!--<input type="button" onclick="" value="수정하기">-->
-                        </div>
-                    </div>
-                </div>
+                        {% endif %}
+                    {% endfor %}
+                <div>
             </div>
         </div>
     </div>
