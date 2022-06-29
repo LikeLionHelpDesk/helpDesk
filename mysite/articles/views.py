@@ -42,6 +42,7 @@ def answer_create(request, question_id):
             answer.create_date = timezone.now()
             answer.question = question
             answer.author = request.user
+            answer.image = request.FILES.get('image')
             answer.save()
             return redirect('detail', question_id = question.id)
     else:
@@ -104,4 +105,13 @@ def select(request, question_id, answer_id):
 
 def test(request):
     return render(request, 'test.html')
+
+@login_required(login_url='../../../users/login')
+def answer_delete(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user != answer.author:
+        messages.error(request, '삭제권한이 없습니다!')
+    else:
+        answer.delete()
+    return redirect('detail', question_id=answer.question.id)
 

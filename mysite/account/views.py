@@ -18,6 +18,7 @@ def profile(request, user_id):
     question_list = Question.objects.order_by('-create_date') # 작성일시 역순으로 정렬
     client1 = get_object_or_404(User, pk=user_id)
     client_obj = Profile.objects.get(user=client1)
+    image = request.FILES.get('image')
     context = {'profile' : client_obj, 'question_list' : question_list}
     return render(request, 'profile.html', context)
 
@@ -25,7 +26,8 @@ def profile(request, user_id):
 @transaction.atomic
 def update_profile(request):
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        profile_form.image = request.FILES.get('image')
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, 'Your profile was successfully updated!')

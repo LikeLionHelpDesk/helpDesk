@@ -4,9 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <title>HelpDesk::회원가입</title>
 </head>
 <body>
+    <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
+        <div class="container">
+            <div class="topMenu" id="joinTopMenu">
+                <a href="{% url 'index' %}">
+                    <div class="topMenuWrap">
+                        <div class="logoIcon"><img src="/static/style/logo.png" alt="헬프데스크 이미지 로고"></div>
+                        <div class="logoTxt"><img src="/static/style/logoTxt.png" alt="헬프데스크 텍스트 로고"></div>
+                    </div>    
+                </a>
+            </div>
+            <div class="contentsWrap">
+                <div class="contentsHead"><h2>회원가입</h2></div>
+                <div class="contentsBody">
+                    <div class="textMenuWrap">
+                        <div class="textMenu">
+                            <p><label for="username">아이디</label></p>
+                            <p><label for="password1">비밀번호 입력</label></p>
+                            <p><label for="password2">비밀번호 확인</label></p>
+                            <p><label for="email">이메일</label></p>
+                        </div>
+                    </div>
+                    <div class="inputMenuWrap">
+                        <div class="inputMenu">
+                            <input type="text" name="username" value="{{ form.username.value|default_if_none:'' }}" size="26" placeholer="4자 이상 입력해주세요." required>
+                            <input type="password" name="password1" value="{{ form.password1.value|default_if_none:'' }}" id="password1" size="26" required>
+                            <input type="password" name="password2" value="{{ form.password2.value|default_if_none:'' }}" id="password2" size="26" required>
+                            <!--<img id="passwordShield" src="/static/style/unshiled.png" alt="비밀번호 일치 체크">-->
+                            <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" size="26" required> <!--에러 발생한다면, type을 email->text로 바꿔보기-->
+                        </div>
+                    </div>
+                    <div class="joinButtons">
+                        <!--취소하기 버튼 클릭했을 때 어떻게 할 지 이야기해보기-->
+                        <a href="{% url 'index' %}">
+                            <input type="button" onclick="" value="취소">
+                        </a>
+                        <button type="submit">가입</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+<!--
     <form action="{% url 'signup' %}" method="post">
         {% csrf_token %}
         {% include "form_errors.html" %}
@@ -28,5 +81,4 @@
         </div>
         <button type="submit">submit</button>
     </form>
-</body>
-</html>
+-->

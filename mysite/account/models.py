@@ -10,7 +10,8 @@ class Profile(models.Model):
     school = models.TextField(blank=True, null=True)
     git_address = models.TextField(blank=True,null=True)
     adopted_answer = models.PositiveIntegerField(default=0)
-
+    image = models.ImageField(upload_to="account/profile/", blank=True, null=True)
+    
     def __str__(self):
         return self.user.username
 

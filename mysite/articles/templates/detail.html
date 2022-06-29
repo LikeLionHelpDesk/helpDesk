@@ -120,7 +120,7 @@
 <body>
     <div class="container">
         <div class="topLine">
-            <a href="index.html">
+            <a href="{% url 'index' %}">
                 <img src="/static/logo.png" style="width: 100px; height: 100px; text-align: center;">
             <img src="/static/logoTxt.png" style="width: 100px; height: 100px;">
             </a>
@@ -134,6 +134,9 @@
             </div>
             <div>
                 작성자 이름 : {{ question.author.username }}
+            </div>
+            <div>
+                태그 : {{ question.tags }}
             </div>
             <div>
                 작성 시간 : {{ question.create_date }}
@@ -158,28 +161,65 @@
         </div>
     
         <h5>{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
-        <div>
-            <ul>
+        <ul>
+            채택 된 답변
             {% for answer in question.answer_set.all %}
-                <li>{{ answer.content }} - 작성자: {{ answer.author.username }} 등록시간: {{ answer.create_date}}
-                    {% if answer.modify_date %}
-                    <div>
-                        <div>modified at</div>
-                        <div>{{ answer.modify_date }}</div>
-                    </div>
-                    {% endif %}
-                {% if request.user == answer.author %}
-                {% endif %}
-                </li>
-                <div>
-                    {% if answer.image %}
-                    <img src = "{{answer.image.url}}" width = "200" />
-                    {% endif %}     
-                </div>
+            {% if answer.select %}
+            <li>{{ answer.content }}
+            <a href="{% url 'profile' answer.author.pk %}">
+            {{ answer.author.profile.nickname }}
+            </a>
+            <div>
+                {% if answer.image %}
+                <img src = "{{answer.image.url}}" width = "200" />
+                {% endif %}                         
+            </div>
+            {% if request.user == question.author and request.user != answer.author %}
+            <form action="{% url 'select' question.id answer.id%}" method="post">
+            {% csrf_token %}
+            취소 : <input type="checkbox" name="cancel" id="">
+            <input type="submit" value="확인">
+            </form>
+            {% endif %}
+            {% if request.user == answer.author %}
+            <div>
+                <a href="{% url 'answer_delete' answer.id %}"><button>삭제</button></a>
+            </div>
+            {% endif %}            
+            </li>
+            {% endif %}
             {% endfor %}
-    
+        </ul>
+            <br>
+        <ul>
+            채택 안 된 답변
+            {% for answer in question.answer_set.all %}
+            {% if answer.select == False %}
+            <li>{{ answer.content }}
+            <a href="{% url 'profile' answer.author.pk %}">
+            {{ answer.author.profile.nickname }}
+            </a>
+            <div>
+                {% if answer.image %}
+                <img src = "{{answer.image.url}}" width = "200" />
+                {% endif %}                         
+            </div>
+            {% if request.user == question.author and request.user != answer.author %}
+                <form action="{% url 'select' question.id answer.id%}" method="post">
+                {% csrf_token %}
+                채택 : <input type="checkbox" name="select" id="">
+                <input type="submit" value="확인">
+                </form>
+            {% endif %}
+            {% if request.user == answer.author %}
+                <div>
+                    <a href="{% url 'answer_delete' answer.id %}"><button>삭제</button></a>
+                </div>
+            {% endif %}            
+            </li>
+                {% endif %}
+                {% endfor %}
             </ul>
-        </div>
         <div class="mentoCnt">
             <form action="{% url 'answer_create' question.id %}" method="post" enctype="multipart/form-data"> 
                 {% if form.errors %}
@@ -196,7 +236,7 @@
                 {% endif %}
                 {% csrf_token %}
                 <textarea {% if not user.is_authenticated %}disabled{% endif %}
-                      name="content" id="content" class="form-control" rows="10"></textarea>
+                      name="content" id="content" class="form-control" rows="10" cols="120"></textarea>
                 <input {% if not user.is_authenticated %}disabled{% endif %} type="file" name="image" />
                 <br />
                 <br />
@@ -208,7 +248,7 @@
                 </a>
             </div>
         </div>
-        
+    
     </div>
     
 </body>
