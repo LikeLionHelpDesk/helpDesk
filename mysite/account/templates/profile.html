@@ -1,76 +1,4 @@
 {% load static %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    This is the profile page for {{profile.user}}
-    <div>
-        <br />
-        {% if profile.image %}
-        <img src = "{{ profile.image.url }}" width="200" height="200" />
-        {% else %}
-        <img src="{% static 'user.png' %}" width="200" height="200" />
-        {% endif %}
-        <br />
-    </div>
-    <div>
-        nickname : {{profile.nickname}}
-    </div>
-    <div>
-        school : {{profile.school}}
-    </div>
-    <div>
-        git : {{profile.git_address}}
-    </div>
-    <div>
-        내 소개 : {{profile.bio}} 
-    </div>
-    <div>
-        나의 등급 : 
-        {% if 3 >= profile.adopted_answer %}
-            초보
-        {% elif 10 >= profile.adopted_answer %}
-            중수
-        {% else %}
-            고수
-        {% endif %}
-    </div>
-    <div>
-        채택 받은 나의 답변수 : {{profile.adopted_answer}}
-    </div>
-    <br>
-    {% if user == profile.user %}
-    <div>
-        내 질문
-        {% for question in question_list %}
-            {% if question.author == profile.user %}
-                <div>
-                    <a href=""> {{question.subject}} </a>
-                </div>
-            {% endif %}
-        {% endfor %}
-        <div>
-            <a href="../profile/update_profile">
-                <button>
-                    수정하기
-                </button>
-            </a>
-            <a href="{% url 'index' %}">
-                <button>
-                    home
-                </button>
-            </a>
-        </div>    
-    </div>
-    {% endif %}
-
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -166,25 +94,24 @@
                                 <input type="button" value="수정하기">
                             </a>
                         </div>
+                        <div class="introduceBarHead"><h2>My Questions</h2></div>
+                        <div>
+                            채택 받은 나의 답변수 : {{profile.adopted_answer}}
+                        </div>
+                        {% if user == profile.user %}
+                        <div>
+                            내 질문
+                            {% for question in question_list %}
+                                {% if question.author == profile.user %}
+                                    <div>
+                                        <a href=""> {{question.subject}} </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}            
                     </div>
-
-
                 </div>
-                <div>
-                    채택 받은 나의 답변수 : {{profile.adopted_answer}}
-                </div>
-                {% if user == profile.user %}
-                <div>
-                    내 질문
-                    {% for question in question_list %}
-                        {% if question.author == profile.user %}
-                            <div>
-                                <a href=""> {{question.subject}} </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}    
             
             </div>
         </div>
